@@ -7,6 +7,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     public float speed = 10;
     public float jampPower = 5;
+
+    public LayerMask groundLayer;
+
+    public Vector2 boxSize;
+    public float distance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,11 +24,31 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(x * speed, rb.velocity.y) ;
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.AddForce(Vector2.up * jampPower, ForceMode2D.Impulse);
-            
-
         }
-     }
+    }
+
+    // Персонаж на земле?
+    private bool IsGrounded()
+    {
+        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, distance, groundLayer))
+        {
+            // Да
+            return true;
+        }
+        else
+        {
+            // Нет
+            return false;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position - transform.up * distance, boxSize);
+    }
 }
