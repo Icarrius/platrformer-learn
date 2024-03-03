@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -13,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 boxSize;
     public float distance;
     private int jampkount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,10 +22,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         float x = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(x * speed, rb.velocity.y) ;
+        rb.velocity = new Vector2(x * speed, rb.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || jampkount <2))
-           
+        if (Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || jampkount <2))        
         {
             rb.velocity = Vector2.zero;
             jampkount = jampkount + 1; 
@@ -34,18 +32,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ???????? ?? ??????
     private bool IsGrounded()
     {
         if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, distance, groundLayer))
         {
-            jampkount = 0;
-            // ??
+            jampkount = 0; 
             return true;
         }
         else
         {
-            // ???
             return false;
         }
     }
@@ -54,6 +49,5 @@ public class PlayerMovement : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position - transform.up * distance, boxSize);
-
     }
 }
