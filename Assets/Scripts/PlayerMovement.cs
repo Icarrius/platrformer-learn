@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     public float jampPower = 5;
 
     public LayerMask groundLayer;
+    public Animator animator;
+    public SpriteRenderer spriteRenderer;
 
     public Vector2 boxSize;
     public float distance;
@@ -23,6 +25,24 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(x * speed, rb.velocity.y);
+
+        if(Mathf.Abs(x) > 0)
+        {
+            animator.SetBool("IsWalking", true);
+
+            if(x > 0)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else if (x < 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || jampkount <2))        
         {
